@@ -10,20 +10,21 @@ typedef struct
   float salario, idade;
 } Funcionario;
 
-void procurarFuncionario(int quantidadeFuncionario, Funcionario *funcionario);
+// DECLARAÇÃO DE FUNÇÕES !!                                                                  //
+void procurarFuncionario(int *quantidadeFuncionario, Funcionario *funcionario);
 void menuAdm(int *quantidadeFuncionario, Funcionario *funcionario);
-void cadastrarFuncionarios(Funcionario *p, int *quantidadeFuncionario);
-void listarFuncionarios(int *quantidadeFuncionario, Funcionario *p);
-void procurarFuncao(int *quantidadeFuncionario, Funcionario *p);
-void procurarNome(int quantidadeFuncionario, Funcionario *p);
-Funcionario *procurarCpf(int *quantidadeFuncionario, Funcionario *p);
-void loginCol(Funcionario *p, int *quantidadeFuncionario);
-void loginAdm();
-void procurarFuncionario(int quantidadeFuncionario, Funcionario *funcionario);
-void editarCadastro(int *quantidadeFuncionario, Funcionario *p);
+void cadastrarFuncionarios(Funcionario *funcionario, int *quantidadeFuncionario);
+void listarFuncionarios(int *quantidadeFuncionario, Funcionario *funcionario);
+void procurarFuncionarioPorFuncao(int *quantidadeFuncionario, Funcionario *funcionario);
+void procurarFuncionarioPorNome(int *quantidadeFuncionario, Funcionario *funcionario);
+Funcionario *procurarFuncionarioPorCPF(int *quantidadeFuncionario, Funcionario *funcionario);
+void loginFuncionario(Funcionario *funcionario, int *quantidadeFuncionario);
+void loginAdministrador();
+void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcionario);
 char menuInicial();
 void mostraFuncionario(Funcionario *funcionario);
 
+// VOID MAIN "PROGRAMA PRINCIPAL"//
 void main()
 {
   setlocale(LC_ALL, "portuguese");
@@ -40,12 +41,12 @@ void main()
     switch (opcao)
     {
     case '1':
-      loginAdm();
+      loginAdministrador();
       menuAdm(quantidadeFuncionario, funcionario);
       system("cls");
       break;
     case '2':
-      loginCol(funcionario, quantidadeFuncionario);
+      loginFuncionario(funcionario, quantidadeFuncionario);
       break;
     case '0':
       printf("\n\nPROGRAMA FINALIZADO! \n\n");
@@ -57,6 +58,7 @@ void main()
   } while (opcao != '0');
 }
 
+// FUNÇÕES//
 void menuAdm(int *quantidadeFuncionario, Funcionario *funcionario)
 {
   char opcao;
@@ -67,7 +69,7 @@ void menuAdm(int *quantidadeFuncionario, Funcionario *funcionario)
     printf("[1] CADASTRAR NOVO FUNCIONÁRIO\n");
     printf("[2] LISTA DE FUNCIONÁRIOS \n");
     printf("[3] BUSCAR FUNCIONÁRIO \n");
-    printf("[4] EDITAR CADASTRO DO FUNCIONARIO");
+    printf("[4] EDITAR CADASTRO DO FUNCIONARIO\n");
     printf("[0] SAIR \n");
     printf("\nEscolha uma opção: ");
     opcao = getche();
@@ -87,7 +89,7 @@ void menuAdm(int *quantidadeFuncionario, Funcionario *funcionario)
       procurarFuncionario(quantidadeFuncionario, funcionario);
       break;
     case '4':
-      editarCadastro(quantidadeFuncionario, funcionario);
+      editarCadastroDoFuncionario(quantidadeFuncionario, funcionario);
       break;
     case '0':
       printf("\n\nSESSÃO FINALIZADA \n\n");
@@ -95,11 +97,13 @@ void menuAdm(int *quantidadeFuncionario, Funcionario *funcionario)
       break;
     default:
       printf("\nESSA OPÇÃO NÃO EXISTE! ESCOLHA UMA OPÇÃO VÁLIDA \n");
+      system("pause");
+      system("cls");
     }
   } while (opcao != '0');
 }
 
-void cadastrarFuncionarios(Funcionario *p, int *quantidadeFuncionario)
+void cadastrarFuncionarios(Funcionario *funcionario, int *quantidadeFuncionario)
 {
   char novoCadastro;
   int i;
@@ -110,25 +114,25 @@ void cadastrarFuncionarios(Funcionario *p, int *quantidadeFuncionario)
     system("cls");
     printf("=====CADASTRO DE FUNCIONÁRIO=====\n");
     printf("\nInforme o CPF do funcionário (sem hífen): ");
-    gets((p + i)->cpf);
+    gets((funcionario + i)->cpf);
     printf("Informe o nome do funcionário: ");
-    gets((p + i)->nome);
+    gets((funcionario + i)->nome);
     printf("Informe a idade do funcionário: ");
     fflush(stdin);
-    scanf("%f", &(p + i)->idade);
+    scanf("%f", &(funcionario + i)->idade);
     fflush(stdin);
     printf("Informe o sexo do funcionário: ");
-    gets((p + i)->sexo);
+    gets((funcionario + i)->sexo);
     printf("Informe o cargo do funcionário: ");
-    gets((p + i)->funcao);
+    gets((funcionario + i)->funcao);
     printf("Informe o salário do funcionário: R$ ");
-    scanf("%f", &(p + i)->salario);
+    scanf("%f", &(funcionario + i)->salario);
     fflush(stdin);
     printf("\n----------CRIANDO LOGIN----------\nInforme o login do funcionário: ");
-    gets((p + i)->login);
+    gets((funcionario + i)->login);
     fflush(stdin);
     printf("Informe a senha do funcionário: ");
-    gets((p + i)->senha);
+    gets((funcionario + i)->senha);
 
     *quantidadeFuncionario = *quantidadeFuncionario + 1;
 
@@ -144,7 +148,7 @@ void cadastrarFuncionarios(Funcionario *p, int *quantidadeFuncionario)
   } while (novoCadastro != '2');
 }
 
-void listarFuncionarios(int *quantidadeFuncionario, Funcionario *p)
+void listarFuncionarios(int *quantidadeFuncionario, Funcionario *funcionario)
 {
   int i;
   if (*quantidadeFuncionario == 0)
@@ -155,12 +159,12 @@ void listarFuncionarios(int *quantidadeFuncionario, Funcionario *p)
   printf("\n\n======= LISTA DE FUNCIONÁRIOS =======\n\n");
   for (i = 0; i < *quantidadeFuncionario; i++)
   {
-    mostraFuncionario(p + i);
+    mostraFuncionario(funcionario + i);
     printf("- - - - - - - - - - - - - - - - - - -\n");
   }
 }
 
-void procurarFuncao(int *quantidadeFuncionario, Funcionario *p)
+void procurarFuncionarioPorFuncao(int *quantidadeFuncionario, Funcionario *funcionario)
 {
   bool achou = false;
   char funcao[30];
@@ -177,10 +181,10 @@ void procurarFuncao(int *quantidadeFuncionario, Funcionario *p)
   achou = false;
   for (i = 0; i < *quantidadeFuncionario; i++)
   {
-    if (strcmp(funcao, (p + i)->funcao) == 0)
+    if (strcmp(funcao, (funcionario + i)->funcao) == 0)
     {
       achou = true;
-      mostraFuncionario(p + i);
+      mostraFuncionario(funcionario + i);
     }
   }
   if (achou == false)
@@ -189,39 +193,46 @@ void procurarFuncao(int *quantidadeFuncionario, Funcionario *p)
   }
 }
 
-void procurarNome(int quantidadeFuncionario, Funcionario *p)
+void procurarFuncionarioPorNome(int *quantidadeFuncionario, Funcionario *funcionario)
 {
-  bool achou = false;
-  char nome[30];
-
   fflush(stdin);
-  if (quantidadeFuncionario == 0)
+  bool achou = false;
+  char nome[30], opcao;
+
+  if (*quantidadeFuncionario == 0)
   {
-    printf("\nNENHUM FUNCIONARIO CADASTRADO COM ESTE NOME!!\n\n");
+    printf("\nNENHUM FUNCIONARIO CADASTRADO !!\n\n");
     return;
   }
   printf("\nINFORME O NOME COMPLETO DO FUNCIONÁRIO: ");
   gets(nome);
-  for (int i = 0; i < quantidadeFuncionario; i++)
+  for (int i = 0; i < *quantidadeFuncionario; i++)
   {
-    if (strcmp(nome, (p + i)->nome) == 0)
+    if (strcmp(nome, (funcionario + i)->nome) == 0)
     {
       achou = true;
 
-      mostraFuncionario(p + i);
+      mostraFuncionario(funcionario + i);
     }
   }
   if (achou == false)
   {
     printf("\nO NOME DIGITADO NÃO FOI ENCONTRADO! \n\n");
+    printf("[1] Tentar novamente\n\n");
+    printf("[0] Sair\n");
+    opcao = getche();
+    if (opcao == '1')
+    {
+      system("cls");
+      procurarFuncionarioPorNome(quantidadeFuncionario, funcionario);
+    }
   }
 }
 
-Funcionario *procurarCpf(int *quantidadeFuncionario, Funcionario *funcionario)
+Funcionario *procurarFuncionarioPorCPF(int *quantidadeFuncionario, Funcionario *funcionario)
 {
   bool achou = false;
   char cpf[20];
-  int i;
 
   fflush(stdin);
   if (*quantidadeFuncionario == 0)
@@ -232,7 +243,7 @@ Funcionario *procurarCpf(int *quantidadeFuncionario, Funcionario *funcionario)
   printf("\nINFORME O CPF DO FUNCIONÁRIO (SEM HÍFEN): ");
   gets(cpf);
   achou = false;
-  for (i = 0; i < *quantidadeFuncionario; i++)
+  for (int i = 0; i < *quantidadeFuncionario; i++)
   {
     if (strcmp(cpf, (funcionario + i)->cpf) == 0)
     {
@@ -248,7 +259,7 @@ Funcionario *procurarCpf(int *quantidadeFuncionario, Funcionario *funcionario)
   return NULL;
 }
 
-void loginCol(Funcionario *p, int *quantidadeFuncionario)
+void loginFuncionario(Funcionario *funcionario, int *quantidadeFuncionario)
 {
   system("cls");
   int i = 0;
@@ -269,12 +280,12 @@ void loginCol(Funcionario *p, int *quantidadeFuncionario)
     scanf("%s", &senha1);
     for (i = 0; i < *quantidadeFuncionario; i++)
     {
-      if (strcmp((p + i)->login, login1) == 0 && strcmp((p + i)->senha, senha1) == 0)
+      if (strcmp((funcionario + i)->login, login1) == 0 && strcmp((funcionario + i)->senha, senha1) == 0)
       {
         achou = true;
 
         printf("\n---------------------------------\n\tLOGIN CONCLUÍDO!\n---------------------------------\n\n");
-        printf("\tSEJA BEM VINDO \n\t%s!!\n\n", (p + i)->nome);
+        printf("\tSEJA BEM VINDO \n\t%s!!\n\n", (funcionario + i)->nome);
         system("pause");
         system("cls");
         return i;
@@ -285,10 +296,10 @@ void loginCol(Funcionario *p, int *quantidadeFuncionario)
       printf("\nLOGIN INCORRETO.");
       printf("\nPOR FAVOR, TENTE NOVAMENTE: \n");
     }
-  } while (strcmp((p + i)->login, login1) != 0 || strcmp((p + i)->senha, senha1) != 0);
+  } while (strcmp((funcionario + i)->login, login1) != 0 || strcmp((funcionario + i)->senha, senha1) != 0);
 }
 
-void loginAdm()
+void loginAdministrador()
 {
   system("cls");
   char login[50] = "adm", login1[50], senha[8] = "1234", senha1[8];
@@ -311,69 +322,146 @@ void loginAdm()
   system("cls");
 }
 
-void procurarFuncionario(int quantidadeFuncionario, Funcionario *funcionario)
+void procurarFuncionario(int *quantidadeFuncionario, Funcionario *funcionario)
 {
+
   char opcao;
-  printf("\n\n-----------BUSCAR POR-----------\n");
-  printf("[1] NOME\n");
-  printf("[2] CPF\n");
-  printf("[3] FUNÇÃO\n\n");
-  printf("Escolha uma opção: ");
-  opcao = getche();
-  fflush(stdin);
-  switch (opcao)
+  do
   {
-  case '1':
-    procurarNome(quantidadeFuncionario, funcionario);
-    system("pause");
-    system("cls");
-    break;
-  case '2':
-    procurarCpf(quantidadeFuncionario, funcionario);
-    system("pause");
-    system("cls");
-    break;
-  case '3':
-    procurarFuncao(quantidadeFuncionario, funcionario);
-    system("pause");
-    system("cls");
-    break;
-  default:
-    printf("\nESSA OPÇÃO NÃO EXISTE! ESCOLHA UMA OPÇÃO VÁLIDA \n");
-  }
+    printf("\n\n-----------BUSCAR POR-----------\n");
+    printf("[1] NOME\n");
+    printf("[2] CPF\n");
+    printf("[3] FUNÇÃO\n");
+    printf("[0] Sair\n\n");
+    printf("Escolha uma opção: ");
+    opcao = getche();
+    fflush(stdin);
+    switch (opcao)
+    {
+    case '1':
+      procurarFuncionarioPorNome(quantidadeFuncionario, funcionario);
+      system("pause");
+      return;
+      break;
+
+    case '2':
+      procurarFuncionarioPorCPF(quantidadeFuncionario, funcionario);
+      system("pause");
+      system("cls");
+      break;
+
+    case '3':
+      procurarFuncionarioPorFuncao(quantidadeFuncionario, funcionario);
+      system("pause");
+      system("cls");
+      break;
+
+    case '0':
+      system("cls");
+      return;
+      break;
+
+    default:
+      printf("\nESSA OPÇÃO NÃO EXISTE! ESCOLHA UMA OPÇÃO VÁLIDA \n");
+    }
+  } while (opcao != '0');
 }
 
-void editarCadastro(int *quantidadeFuncionario, Funcionario *p)
+void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcionario)
 {
+  system("cls");
   char opcao;
-  Funcionario *funcionarioEncontrado = procurarCpf(quantidadeFuncionario, p);
+  printf("\n----EDITAR CADASTRO DE FUNCIONARIOS----\n");
+  Funcionario *funcionarioEncontrado = procurarFuncionarioPorCPF(quantidadeFuncionario, funcionario);
   if (funcionarioEncontrado == NULL)
   {
     system("pause");
+    system("cls");
+    if (*quantidadeFuncionario > 0)
+    {
+      editarCadastroDoFuncionario(quantidadeFuncionario, funcionario);
+    }
     return;
   }
   do
   {
-    printf("Oque deseja editar: \n");
+    fflush(stdin);
+    printf("\nOque deseja editar: \n\n");
     printf("[1] NOME\n");
     printf("[2] IDADE\n");
     printf("[3] SEXO\n");
     printf("[4] FUNÇÃO\n");
-    printf("[5] SALARIO\n");
-    printf("[0] SAIR");
+    printf("[5] SALARIO\n\n");
+    printf("[0] SAIR\n");
     opcao = getche();
 
     switch (opcao)
     {
     case '1':
-      printf("Digite o novo nome: ");
+      printf("\n Atualizar nome: ");
       gets(funcionarioEncontrado->nome);
+      printf("\nNOVO CADASTRO\n");
       mostraFuncionario(funcionarioEncontrado);
       break;
 
+    case '2':
+      printf("\nAtualizar idade: ");
+      scanf("%f", &funcionarioEncontrado->idade);
+      printf("\nNOVO CADASTRO\n");
+      mostraFuncionario(funcionarioEncontrado);
+      break;
+
+    case '3':
+      printf("\nAtualizar sexo: ");
+      gets(funcionarioEncontrado->sexo);
+      printf("\nNOVO CADASTRO\n");
+      mostraFuncionario(funcionarioEncontrado);
+      break;
+
+    case '4':
+      printf("\nAtualizar função: ");
+      gets(funcionarioEncontrado->funcao);
+      printf("\nNOVO CADASTRO\n");
+      mostraFuncionario(funcionarioEncontrado);
+      break;
+
+    case '5':
+      printf("\nAtualizar salario: ");
+      scanf("%f", &funcionarioEncontrado->salario);
+      printf("\nNOVO CADASTRO\n");
+      mostraFuncionario(funcionarioEncontrado);
+      break;
+
+    case '0':
+      system("cls");
+      Funcionario *procurarFuncionarioPorCPF(int *quantidadeFuncionario, Funcionario *funcionario);
+      break;
+
     default:
+      printf("\nValor digitado invalido!");
+      system("pause");
+      system("cls");
       break;
     }
+    do
+    {
+      printf("\n[1] Continuar editando\n");
+      printf("[2] Editar outro funcionario\n\n");
+      printf("[0] sair");
+      opcao = getche();
+
+      if (opcao == '2')
+      {
+        system("cls");
+        editarCadastroDoFuncionario(quantidadeFuncionario, funcionario);
+      }
+      if (opcao == '0')
+      {
+        system("cls");
+        menuAdm(quantidadeFuncionario, funcionario);
+      }
+    } while (opcao != '1');
+    system("cls");
   } while (opcao != '0');
 
   system("pause");
@@ -386,7 +474,7 @@ char menuInicial()
   char opcao;
 
   printf("================================\n-----  Com.TI.go SISTEMAS  -----\n================================\n\n");
-  printf("\n[1] ADMINISTRADOR\n\n");
+  printf("\n[1] ADMINISTRADOR\n");
   printf("[2] COLABORADOR\n");
   printf("[0] SAIR\n");
   opcao = getche();
