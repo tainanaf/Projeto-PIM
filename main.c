@@ -169,11 +169,11 @@ void listarFuncionarios(int *quantidadeFuncionario, Funcionario *funcionario)
 void procurarFuncionarioPorFuncao(int *quantidadeFuncionario, Funcionario *funcionario)
 {
   bool achou = false;
-  char funcao[30],opcao;
+  char funcao[30], opcao;
   int i;
 
   fflush(stdin);
-  
+
   printf("\nINFORME A FUNCAO DO FUNCIONÁRIO: ");
   gets(funcao);
   achou = false;
@@ -237,10 +237,10 @@ void procurarFuncionarioPorNome(int *quantidadeFuncionario, Funcionario *funcion
 Funcionario *procurarFuncionarioPorCPF(int *quantidadeFuncionario, Funcionario *funcionario)
 {
   bool achou = false;
-  char cpf[20],opcao;
+  char cpf[20], opcao;
 
   fflush(stdin);
-  
+
   printf("\nINFORME O CPF DO FUNCIONÁRIO (SEM HÍFEN): ");
   gets(cpf);
   achou = false;
@@ -266,11 +266,13 @@ Funcionario *procurarFuncionarioPorCPF(int *quantidadeFuncionario, Funcionario *
     {
       system("cls");
       procurarFuncionarioPorCPF(quantidadeFuncionario, funcionario);
+      return;
     }
-  if(opcao == '0'){
-    system("cls");
-    menuAdm(quantidadeFuncionario,funcionario);
-  }
+    if (opcao == '0')
+    {
+      system("cls");
+      menuAdm(quantidadeFuncionario, funcionario);
+    }
   }
   return NULL;
 }
@@ -340,7 +342,8 @@ void loginAdministrador()
 
 void procurarFuncionario(int *quantidadeFuncionario, Funcionario *funcionario)
 {
-  if(*quantidadeFuncionario == 0){
+  if (*quantidadeFuncionario == 0)
+  {
     printf("\n\nNENHUM FUNCIONARIO CADASTRADO!!\n\n");
     system("pause");
     system("cls");
@@ -384,6 +387,9 @@ void procurarFuncionario(int *quantidadeFuncionario, Funcionario *funcionario)
 
     default:
       printf("\nESSA OPÇÃO NÃO EXISTE! ESCOLHA UMA OPÇÃO VÁLIDA \n");
+      system("pause");
+      printf("\n");
+      system("cls");
     }
   } while (opcao != '0');
 }
@@ -392,7 +398,8 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
 {
   char opcao;
 
-  if(*quantidadeFuncionario == 0){
+  if (*quantidadeFuncionario == 0)
+  {
     printf("\n\nNENHUM FUNCIONARIO CADASTRADO!!\n\n");
     system("pause");
     system("cls");
@@ -404,9 +411,9 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
   if (funcionarioEncontrado == NULL)
   {
     return;
-   }
+  }
   do
- {
+  {
     fflush(stdin);
     printf("\nOque deseja editar: \n\n");
     printf("[1] NOME\n");
@@ -424,7 +431,7 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
       gets(funcionarioEncontrado->nome);
       printf("\nNOVO CADASTRO\n");
       mostraFuncionario(funcionarioEncontrado);
-      menuContinuarEditando(quantidadeFuncionario,funcionario);
+      menuContinuarEditando(quantidadeFuncionario, funcionario);
       break;
 
     case '2':
@@ -432,7 +439,7 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
       scanf("%f", &funcionarioEncontrado->idade);
       printf("\nNOVO CADASTRO\n");
       mostraFuncionario(funcionarioEncontrado);
-      menuContinuarEditando(quantidadeFuncionario,funcionario);     
+      menuContinuarEditando(quantidadeFuncionario, funcionario);
       break;
 
     case '3':
@@ -440,7 +447,7 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
       gets(funcionarioEncontrado->sexo);
       printf("\nNOVO CADASTRO\n");
       mostraFuncionario(funcionarioEncontrado);
-      menuContinuarEditando(quantidadeFuncionario,funcionario);
+      menuContinuarEditando(quantidadeFuncionario, funcionario);
       break;
 
     case '4':
@@ -448,7 +455,7 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
       gets(funcionarioEncontrado->funcao);
       printf("\nNOVO CADASTRO\n");
       mostraFuncionario(funcionarioEncontrado);
-      menuContinuarEditando(quantidadeFuncionario,funcionario);
+      menuContinuarEditando(quantidadeFuncionario, funcionario);
       break;
 
     case '5':
@@ -456,7 +463,7 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
       scanf("%f", &funcionarioEncontrado->salario);
       printf("\nNOVO CADASTRO\n");
       mostraFuncionario(funcionarioEncontrado);
-      menuContinuarEditando(quantidadeFuncionario,funcionario);
+      menuContinuarEditando(quantidadeFuncionario, funcionario);
       break;
 
     case '0':
@@ -465,14 +472,14 @@ void editarCadastroDoFuncionario(int *quantidadeFuncionario, Funcionario *funcio
       break;
 
     default:
-      printf("\nValor digitado invalido!");
+      printf("\nValor digitado invalido!\n");
       system("pause");
       system("cls");
       break;
     }
-    
+
   } while (opcao != '0');
-  
+
   system("pause");
   system("cls");
 }
@@ -495,27 +502,37 @@ char menuInicial()
   return opcao;
 }
 
-void menuContinuarEditando(int *quantidadeFuncionario, Funcionario *funcionario){
+void menuContinuarEditando(int *quantidadeFuncionario, Funcionario *funcionario)
+{
   char opcao;
   do
-    {
-      printf("\n[1] Continuar editando\n");
-      printf("[2] Editar outro funcionario\n\n");
-      printf("[0] sair");
-      opcao = getche();
+  {
+    printf("\n[1] Continuar editando\n");
+    printf("[2] Editar outro funcionario\n\n");
+    printf("[0] sair");
+    opcao = getche();
+    switch(opcao){
+      case '1':
+        system("cls");
+        return;
+       
 
-      if (opcao == '2')
-      {
+      case '2':   
         system("cls");
         editarCadastroDoFuncionario(quantidadeFuncionario, funcionario);
-      }
-      if (opcao == '0')
-      {
+        break;
+      
+      case '0':
         system("cls");
-        menuAdm(quantidadeFuncionario, funcionario);
+        break;
+
+      default: printf("\nVALOR DIGITADO INVALIDO!!\n\n");
+      system("pause");
+      system("cls");
       }
-    } while (opcao != '1');
-    system("cls");
+      } while (opcao != '0');
+      menuAdm(quantidadeFuncionario, funcionario);
+      system("cls");
 }
 
 void mostraFuncionario(Funcionario *funcionario)
