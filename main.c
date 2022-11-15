@@ -520,7 +520,7 @@ void menuContinuarEditando(int *quantidadeFuncionario, Funcionario *funcionario)
       case '2':   
         system("cls");
         editarCadastroDoFuncionario(quantidadeFuncionario, funcionario);
-        break;
+        return;
       
       case '0':
         system("cls");
