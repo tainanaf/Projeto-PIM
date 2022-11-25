@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1669165622 source:c:\users\taina\documents\pim\trabalho pim\main.c
+	<stdio.h>
+	<locale.h>
+	<stdbool.h>
+	<string.h>
+	<ctype.h>
+	"produto.h"
+	"funcionario.h"
+
+1669160548 c:\users\taina\documents\pim\trabalho pim\produto.h
+	<stdio.h>
+	<locale.h>
+
+1669168051 c:\users\taina\documents\pim\trabalho pim\funcionario.h
+	<stdio.h>
+	<locale.h>
+
